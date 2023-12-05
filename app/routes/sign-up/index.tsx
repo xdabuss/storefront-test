@@ -10,12 +10,12 @@ import {
 import { DEMO_API_URL } from '~/constants';
 
 export async function action({ params, request }: DataFunctionArgs) {
-  const apiUrl = process.env.VENDURE_API_URL || DEMO_API_URL;
-  if (apiUrl === DEMO_API_URL) {
-    return {
-      form: "Registration can't be used with Vendure demo shop! Please connect your own instance.",
-    };
-  }
+  // const apiUrl = process.env.VENDURE_API_URL || DEMO_API_URL;
+  // if (apiUrl === DEMO_API_URL) {
+  //   return {
+  //     form: "Registration can't be used with Vendure demo shop! Please connect your own instance.",
+  //   };
+  // }
 
   const body = await request.formData();
   const fieldErrors = validateRegistrationForm(body);
@@ -25,6 +25,8 @@ export async function action({ params, request }: DataFunctionArgs) {
 
   const variables = extractRegistrationFormValues(body);
   const result = await registerCustomerAccount({ request }, variables);
+  console.log("typename: ")
+  console.log(result.__typename);
   if (result.__typename === 'Success') {
     return redirect('/sign-up/success');
   } else {
